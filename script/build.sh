@@ -1,7 +1,5 @@
 #!/bin/bash -ex
 
-sudo chmod -R 1777 /tmp
-
 chown -R builder2:builder2 /app/
 mkdir -p /app/RPMS/
 

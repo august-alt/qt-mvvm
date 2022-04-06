@@ -33,7 +33,8 @@ RUN apt-get update \
     && echo "builder2 ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers \
     && hasher-useradd builder2 \
     && mkdir /app \
-    && chown root:builder2 /app
+    && chown root:builder2 /app \
+    && chmod -R 1777 /tmp
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY script/build.sh /build.sh
