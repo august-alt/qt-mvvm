@@ -5,6 +5,9 @@ find_package(GTest 1.10 QUIET CONFIG)
 enable_testing()
 
 find_package(GTest 1.10 QUIET CONFIG)
+if (NOT ${MVVM_BUILD_TESTS})
+  return()
+endif()
 
 include(GoogleTest)
 
