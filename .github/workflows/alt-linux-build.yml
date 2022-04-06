@@ -8,7 +8,7 @@ jobs:
     name: Build software using docker
     strategy:
       matrix:
-        alt-version: [ { dist: "alt:p10", artifact: "p10" } ]
+        alt-version: [ { dist: "alt:p10", artifact: "p10" }, { dist: "alt:p9", artifact: "p9" } ]
         architecture: [ amd64 ]
 
     steps:
@@ -25,5 +25,5 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: gpui-${{ matrix.alt-version.artifact }}-${{ matrix.architecture }}
+          name: libqt-mvvm-${{ matrix.alt-version.artifact }}-${{ matrix.architecture }}
           path: RPMS/
