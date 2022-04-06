@@ -1,3 +1,7 @@
+if (NOT ${MVVM_BUILD_TESTS})
+  return()
+endif()
+
 include(GoogleTest)
 
 if(WIN32)
