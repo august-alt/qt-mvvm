@@ -33,7 +33,7 @@ target_include_directories(${library_name}
     PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}> $<BUILD_INTERFACE:${MVVM_AUTOGEN_DIR}>
-    )
+)
 
 # -- Definitions --
 
