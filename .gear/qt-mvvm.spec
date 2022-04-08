@@ -18,6 +18,7 @@ BuildRequires: qt5-declarative-devel
 BuildRequires: qt5-tools-devel
 BuildRequires: qt5-base-common
 BuildRequires: doxygen
+BuildRequires: qcustomplot-qt5-devel
 
 Source0: %name-%version.tar
 
@@ -38,7 +39,7 @@ develop programs that use set libqt-mvvm libraries.
 %setup -q
 
 %build
-%cmake -DMVVM_DISCOVER_TESTS=OFF -DMVVM_ENABLE_FILESYSTEM=OFF -DMVVM_BUILD_EXAMPLES=OFF
+%cmake -DMVVM_DISCOVER_TESTS=OFF -DMVVM_ENABLE_FILESYSTEM=OFF -DMVVM_BUILD_EXAMPLES=OFF -DMVVM_USE_SYSTEM_QCUSTOMPLOT=ON
 %cmake_build
 
 %install

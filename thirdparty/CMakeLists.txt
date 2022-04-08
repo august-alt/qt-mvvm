@@ -2,4 +2,6 @@ if (${MVVM_BUILD_TESTS})
     add_subdirectory(gtest)  
 endif()
 
-add_subdirectory(qcustomplot)
+if (NOT ${MVVM_USE_SYSTEM_QCUSTOMPLOT})
+    add_subdirectory(qcustomplot)
+endif()
