@@ -47,10 +47,11 @@ develop programs that use set libqt-mvvm libraries.
 
 %files
 %doc README.md
-%_libdir/libmvvm_*
+%_libdir/libmvvm_*.so.*
 
 %files -n libqt-mvvm-devel 
 %_libdir/cmake/mvvm/*
+%_libdir/libmvvm_*.so
 %_includedir/*
 
 %changelog
