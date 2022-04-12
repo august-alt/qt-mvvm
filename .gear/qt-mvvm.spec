@@ -2,7 +2,7 @@
 
 Name: libqt-mvvm
 Version: 0.2.0
-Release: alt1
+Release: alt2
 
 Summary: This model-view-viewmodel framework is intended for development of large Qt based applications written in C++.
 License: GPLv3+
@@ -65,6 +65,11 @@ develop programs that use set libqt-mvvm libraries.
 %_includedir/*
 
 %changelog
+* Wed Apr 06 2021 Vladimir Rubanov <august@altlinux.org> 0.2.0-alt2
+- Fixes:
+  - Improve package description.
+  - Provide better separation between development and library packages.
+
 * Wed Apr 06 2021 Vladimir Rubanov <august@altlinux.org> 0.2.0-alt1
 - Initial build
 
