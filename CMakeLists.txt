@@ -3,6 +3,11 @@ project(qt-mvvm VERSION 0.2.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+add_compile_options(-stdlib=libc++)
+add_link_options(-stdlib=libc++)
+endif()
+
 option(MVVM_BUMP_VERSION "Propagate version number" OFF)
 option(MVVM_DISCOVER_TESTS "Auto discover tests and add to ctest, otherwise will run at compile time" ON)
 option(MVVM_ENABLE_FILESYSTEM "Enable <filesystem> (requires modern compiler), otherwise rely on Qt" ON)
