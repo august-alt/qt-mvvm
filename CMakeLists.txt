@@ -23,9 +23,9 @@ include(configuration)
 
 add_subdirectory(source)
 add_subdirectory(thirdparty)
-if(BUILD_TESTING)
+if(MVVM_BUILD_TESTS)
     add_subdirectory(tests)
-endif(BUILD_TESTING)
+endif(MVVM_BUILD_TESTS)
 
 include(installation)
 add_subdirectory(examples)
