@@ -18,6 +18,11 @@ option(MVVM_SETUP_CLANGFORMAT "Setups target to beautify the code with 'make cla
 option(MVVM_SETUP_CODECOVERAGE "Setups target to generate coverage information with 'make coverage'" OFF)
 option(MVVM_USE_SYSTEM_QCUSTOMPLOT "Use QCustomPlot from linux distribution" OFF)
 
+find_program(NINJA_PROGRAM ninja)
+if(NINJA_PROGRAM)
+    message(STATUS "Found ninja: ${NINJA_PROGRAM}.")
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 include(configuration)
 
