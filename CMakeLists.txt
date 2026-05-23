@@ -82,8 +82,9 @@ else()
 
 endif()
 
-add_subdirectory(source)
 add_subdirectory(thirdparty)
+add_subdirectory(source)
+
 if(MVVM_BUILD_TESTS)
     add_subdirectory(tests)
 endif(MVVM_BUILD_TESTS)
