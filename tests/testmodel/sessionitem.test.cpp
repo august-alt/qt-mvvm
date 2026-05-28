@@ -16,7 +16,6 @@
 #include "mvvm/model/sessionitemdata.h"
 #include "mvvm/model/sessionitemtags.h"
 #include "mvvm/model/taginfo.h"
-#include "mvvm/model/variant_constants.h"
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -91,14 +90,14 @@ TEST_F(SessionItemTest, setDataAndImplicitConversion)
         SessionItem item;
         const int role = ItemDataRole::DATA;
         EXPECT_TRUE(item.setData(43.0, ItemDataRole::DATA));
-        EXPECT_EQ(item.data<QVariant>(role).typeName(), Constants::double_type_name);
+        EXPECT_STREQ(item.data<QVariant>(role).typeName(), QMetaType::fromType<double>().name());
     }
 
     {
         SessionItem item;
         const int role = ItemDataRole::DATA;
         EXPECT_TRUE(item.setData(43, ItemDataRole::DATA));
-        EXPECT_EQ(item.data<QVariant>(role).typeName(), Constants::int_type_name);
+        EXPECT_STREQ(item.data<QVariant>(role).typeName(), QMetaType::fromType<int>().name());
     }
 }
 
