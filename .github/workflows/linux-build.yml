@@ -45,9 +45,8 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE && pwd && ls
         mkdir build && cd build
-        cmake -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ../
-        make package_source
-        make -j4        
+        cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release ../
+        cmake --build . --config Release -j4
         
     - name: Upload tarball
       uses: actions/upload-artifact@v7.0.1

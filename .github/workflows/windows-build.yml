@@ -24,7 +24,7 @@ jobs:
       run: |
         set(ccache_url "https://github.com/ccache/ccache/releases/download/v$ENV{CCACHE_VERSION}/ccache-$ENV{CCACHE_VERSION}-windows-x86_64.zip")
         file(DOWNLOAD "${ccache_url}" ./ccache.zip SHOW_PROGRESS)
-        execute_process(COMMAND 7z e ccache.zip -bb3 -r ccache.exe)
+        execute_process(COMMAND 7z e ccache.zip -aoa -bb3 -r ccache.exe)
         
     - name: ccache timestamp
       id: ccache_cache_timestamp
@@ -66,12 +66,12 @@ jobs:
       run: |
         call "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
         set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
-        set PATH=${{github.workspace}};%QTDIR%\bin;%PATH%
+        echo QTDIR=%QTDIR%
+        set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
         cd ${{github.workspace}}
-        dir
         mkdir build
         cd build
-        cmake -G "Visual Studio 17 2022" -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" ..
+        cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" ..
         ccache -z
         ccache -p
         cmake --build . --config Release -j4
@@ -80,9 +80,10 @@ jobs:
       if: success()
       shell: cmd
       run: |
-        echo %QTDIR%
-        set PATH=%QTDIR%\bin;%PATH%
-        echo %PATH%
+        call "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
+        echo QTDIR=%QTDIR%
+        set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
         cd ${{github.workspace}}\build
         ccache -s
         ctest --output-on-failure
