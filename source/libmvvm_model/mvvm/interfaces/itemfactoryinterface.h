@@ -10,7 +10,6 @@
 #ifndef MVVM_INTERFACES_ITEMFACTORYINTERFACE_H
 #define MVVM_INTERFACES_ITEMFACTORYINTERFACE_H
 
-#include "mvvm/core/types.h"
 #include "mvvm/model/function_types.h"
 #include "mvvm/model_export.h"
 #include <memory>

@@ -372,7 +372,7 @@ TEST_F(SessionModelTest, findItem)
     auto parent = model.insertItem<SessionItem>();
 
     // check that we can find item using its own identofoer
-    const identifier_type id = parent->identifier();
+    const std::string id = parent->identifier();
     EXPECT_EQ(model.findItem(id), parent);
 
     // check that we can't find deleted item.
@@ -392,8 +392,8 @@ TEST_F(SessionModelTest, findItemInAlienModel)
     // inserting items in both models
     auto parent1 = model1.insertItem<SessionItem>();
     auto parent2 = model2.insertItem<SessionItem>();
-    const identifier_type id1 = parent1->identifier();
-    const identifier_type id2 = parent2->identifier();
+    const std::string id1 = parent1->identifier();
+    const std::string id2 = parent2->identifier();
 
     // checking that we can access items from both models
     EXPECT_EQ(model1.findItem(id1), parent1);

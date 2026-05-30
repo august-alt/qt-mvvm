@@ -161,7 +161,7 @@ const ItemFactoryInterface* SessionModel::factory() const
 
 //! Returns SessionItem for given identifier.
 
-SessionItem* SessionModel::findItem(const identifier_type& id)
+SessionItem* SessionModel::findItem(const std::string& id)
 {
     return p_impl->m_itemManager->findItem(id);
 }

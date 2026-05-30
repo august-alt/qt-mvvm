@@ -10,7 +10,6 @@
 #ifndef MVVM_MODEL_SESSIONMODEL_H
 #define MVVM_MODEL_SESSIONMODEL_H
 
-#include "mvvm/core/types.h"
 #include "mvvm/core/variant.h"
 #include "mvvm/model/function_types.h"
 #include "mvvm/model/sessionitem.h"
@@ -68,7 +67,7 @@ public:
 
     const ItemFactoryInterface* factory() const;
 
-    SessionItem* findItem(const identifier_type& id);
+    SessionItem* findItem(const std::string& id);
 
     template <typename T = SessionItem> std::vector<T*> topItems() const;
 

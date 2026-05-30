@@ -13,6 +13,7 @@
 #include "mvvm/model/itempool.h"
 #include "mvvm/model/sessionitem.h"
 #include <memory>
+#include <string>
 #include <utility>
 
 namespace {
@@ -48,14 +49,14 @@ std::unique_ptr<SessionItem> ItemManager::createRootItem() const
     return std::make_unique<SessionItem>();
 }
 
-SessionItem* ItemManager::findItem(const identifier_type& id) const
+SessionItem* ItemManager::findItem(const std::string& id) const
 {
     return m_item_pool ? m_item_pool->item_for_key(id) : nullptr;
 }
 
-identifier_type ItemManager::findIdentifier(const SessionItem* item) const
+std::string ItemManager::findIdentifier(const SessionItem* item) const
 {
-    return m_item_pool ? m_item_pool->key_for_item(item) : identifier_type();
+    return m_item_pool ? m_item_pool->key_for_item(item) : std::string();
 }
 
 const ItemPool* ItemManager::itemPool() const

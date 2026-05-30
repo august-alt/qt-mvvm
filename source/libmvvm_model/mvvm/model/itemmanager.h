@@ -10,9 +10,9 @@
 #ifndef MVVM_MODEL_ITEMMANAGER_H
 #define MVVM_MODEL_ITEMMANAGER_H
 
-#include "mvvm/core/types.h"
 #include "mvvm/model_export.h"
 #include <memory>
+#include <string>
 
 namespace ModelView {
 
@@ -34,9 +34,9 @@ public:
 
     std::unique_ptr<SessionItem> createRootItem() const;
 
-    SessionItem* findItem(const identifier_type& id) const;
+    SessionItem* findItem(const std::string& id) const;
 
-    identifier_type findIdentifier(const SessionItem* item) const;
+    std::string findIdentifier(const SessionItem* item) const;
 
     const ItemPool* itemPool() const;
     ItemPool* itemPool();
