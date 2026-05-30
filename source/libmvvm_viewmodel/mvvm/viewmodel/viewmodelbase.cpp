@@ -17,13 +17,13 @@
 using namespace ModelView;
 
 struct ViewModelBase::ViewModelBaseImpl {
-    ViewModelBase* model{nullptr};
-    std::unique_ptr<ViewItem> root;
-    ViewModelBaseImpl(ViewModelBase* model) : model(model) {}
+    ViewModelBase* m_model{nullptr};
+    std::unique_ptr<ViewItem> m_root;
+    ViewModelBaseImpl(ViewModelBase* model) : m_model(model) {}
 
     bool item_belongs_to_model(ViewItem* item)
     {
-        return model->indexFromItem(item).isValid() || item == model->rootItem();
+        return m_model->indexFromItem(item).isValid() || item == m_model->rootItem();
     }
 };
 
@@ -99,7 +99,7 @@ bool ViewModelBase::setData(const QModelIndex& index, const QVariant& value, int
 
 ViewItem* ViewModelBase::rootItem() const
 {
-    return p_impl->root.get();
+    return p_impl->m_root.get();
 }
 
 //! Returns a pointer to the RefViewItem associated with the given index.
@@ -179,5 +179,5 @@ Qt::ItemFlags ViewModelBase::flags(const QModelIndex& index) const
 
 void ViewModelBase::setRootViewItem(std::unique_ptr<ViewItem> root_item)
 {
-    p_impl->root = std::move(root_item);
+    p_impl->m_root = std::move(root_item);
 }

@@ -33,9 +33,9 @@ int main(int argc, char** argv)
     item->addProperty("Hello", "World!");
     item->addProperty("Your answer is", true);
 
-    auto on_property = [](SessionItem* item, const std::string& name) {
-        if (name == "Hello")
-            item->setProperty("Your answer is", item->property<std::string>("Hello") == "World!");
+    auto on_property = [](SessionItem* item_, const std::string& name_) {
+        if (name_ == "Hello")
+            item_->setProperty("Your answer is", item_->property<std::string>("Hello") == "World!");
     };
     item->mapper()->setOnPropertyChange(on_property, nullptr);
 

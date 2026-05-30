@@ -569,8 +569,8 @@ TEST_F(UndoStackTest, multiLayer)
     EXPECT_EQ(layer1_at->identifier(), id_layer1);
 
     // checking tag
-    EXPECT_EQ(layer0_at->tagRow().tag, ToyItems::MultiLayerItem::T_LAYERS);
-    EXPECT_EQ(layer1_at->tagRow().tag, ToyItems::MultiLayerItem::T_LAYERS);
+    EXPECT_EQ(layer0_at->tagRow().m_tag, ToyItems::MultiLayerItem::T_LAYERS);
+    EXPECT_EQ(layer1_at->tagRow().m_tag, ToyItems::MultiLayerItem::T_LAYERS);
     std::vector<SessionItem*> expected = {layer0_at, layer1_at};
     EXPECT_EQ(parent_at->getItems(ToyItems::MultiLayerItem::T_LAYERS), expected);
 }

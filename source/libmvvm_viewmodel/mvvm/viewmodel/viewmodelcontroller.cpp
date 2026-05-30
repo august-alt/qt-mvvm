@@ -120,7 +120,7 @@ struct ViewModelController::ViewModelControllerImpl {
 
     void insert_view(SessionItem* parent, const TagRow& tagrow)
     {
-        auto child = parent->getItem(tagrow.tag, tagrow.row);
+        auto child = parent->getItem(tagrow.m_tag, tagrow.m_row);
         auto children = m_childrenStrategy->children(parent);
         auto index = Utils::IndexOfItem(children, child);
         if (index == -1)
@@ -281,7 +281,7 @@ void ViewModelController::onItemRemoved(SessionItem*, TagRow) {}
 
 void ViewModelController::onAboutToRemoveItem(SessionItem* parent, TagRow tagrow)
 {
-    auto item_to_remove = parent->getItem(tagrow.tag, tagrow.row);
+    auto item_to_remove = parent->getItem(tagrow.m_tag, tagrow.m_row);
     if (item_to_remove == rootSessionItem()
         || Utils::IsItemAncestor(rootSessionItem(), item_to_remove)) {
         // special case when user removes SessionItem which is one of ancestors of our root item

@@ -126,13 +126,13 @@ TEST_F(SessionModelTest, insertNewItemWithTag)
     parent->registerTag(TagInfo::universalTag(tag1));
     auto child1 = model.insertItem<PropertyItem>(parent, {tag1, -1});
 
-    EXPECT_EQ(parent->tagRowOfItem(child1).tag, tag1);
+    EXPECT_EQ(parent->tagRowOfItem(child1).m_tag, tag1);
     EXPECT_EQ(Utils::IndexOfChild(parent, child1), 0);
 
     // adding second child
     auto child2 = model.insertItem<PropertyItem>(parent, {tag1, 0});
 
-    EXPECT_EQ(parent->tagRowOfItem(child2).tag, tag1);
+    EXPECT_EQ(parent->tagRowOfItem(child2).m_tag, tag1);
     EXPECT_EQ(Utils::IndexOfChild(parent, child1), 1);
     EXPECT_EQ(Utils::IndexOfChild(parent, child2), 0);
 }
