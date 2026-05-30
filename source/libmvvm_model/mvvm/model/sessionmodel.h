@@ -41,7 +41,7 @@ public:
 
     // Methods to manipulate data and items.
 
-    SessionItem* insertNewItem(const model_type& modelType, SessionItem* parent = nullptr,
+    SessionItem* insertNewItem(const std::string& modelType, SessionItem* parent = nullptr,
                                const TagRow& tagrow = {});
 
     template <typename T> T* insertItem(SessionItem* parent = nullptr, const TagRow& tagrow = {});
@@ -90,7 +90,7 @@ private:
     void unregisterFromPool(SessionItem* item);
     SessionItem* intern_insert(const item_factory_func_t& func, SessionItem* parent,
                                const TagRow& tagrow);
-    void intern_register(const model_type& modelType, const item_factory_func_t& func,
+    void intern_register(const std::string& modelType, const item_factory_func_t& func,
                          const std::string& label);
 
     struct SessionModelImpl;

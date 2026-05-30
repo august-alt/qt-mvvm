@@ -29,7 +29,7 @@ public:
     void registerItem(const std::string& modelType, item_factory_func_t func,
                       const std::string& label) override;
 
-    std::unique_ptr<SessionItem> createItem(const model_type& modelType) const override;
+    std::unique_ptr<SessionItem> createItem(const std::string& modelType) const override;
 
 protected:
     std::unique_ptr<ItemCatalogue> m_catalogue;

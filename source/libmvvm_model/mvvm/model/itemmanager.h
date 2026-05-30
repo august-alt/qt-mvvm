@@ -30,7 +30,7 @@ public:
     void setItemFactory(std::unique_ptr<ItemFactoryInterface> factory);
     void setItemPool(std::shared_ptr<ItemPool> pool);
 
-    std::unique_ptr<SessionItem> createItem(const model_type& modelType = {}) const;
+    std::unique_ptr<SessionItem> createItem(const std::string& modelType = {}) const;
 
     std::unique_ptr<SessionItem> createRootItem() const;
 

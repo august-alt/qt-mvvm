@@ -29,7 +29,7 @@ void ItemFactory::registerItem(const std::string& modelType, item_factory_func_t
 
 ItemFactory::~ItemFactory() = default;
 
-std::unique_ptr<SessionItem> ItemFactory::createItem(const model_type& modelType) const
+std::unique_ptr<SessionItem> ItemFactory::createItem(const std::string& modelType) const
 {
     return m_catalogue->create(modelType);
 }

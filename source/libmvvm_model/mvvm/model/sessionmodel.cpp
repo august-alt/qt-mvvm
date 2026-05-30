@@ -79,7 +79,7 @@ SessionModel::~SessionModel()
 
 //! Insert new item using item's modelType.
 
-SessionItem* SessionModel::insertNewItem(const model_type& modelType, SessionItem* parent,
+SessionItem* SessionModel::insertNewItem(const std::string& modelType, SessionItem* parent,
                                          const TagRow& tagrow)
 {
     // intentionally passing by value inside lambda
@@ -221,7 +221,7 @@ SessionItem* SessionModel::intern_insert(const item_factory_func_t& func, Sessio
     return p_impl->m_commands->insertNewItem(func, parent, tagrow);
 }
 
-void SessionModel::intern_register(const model_type& modelType, const item_factory_func_t& func,
+void SessionModel::intern_register(const std::string& modelType, const item_factory_func_t& func,
                                    const std::string& label)
 {
     p_impl->m_itemManager->factory()->registerItem(modelType, func, label);

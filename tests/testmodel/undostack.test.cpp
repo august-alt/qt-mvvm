@@ -171,7 +171,7 @@ TEST_F(UndoStackTest, initialState)
 
 TEST_F(UndoStackTest, insertNewItem)
 {
-    const model_type modelType(Constants::BaseType);
+    const std::string modelType(Constants::BaseType);
     SessionModel model;
     model.setUndoRedoEnabled(true);
     auto stack = model.undoStack();

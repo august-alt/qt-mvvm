@@ -27,7 +27,7 @@ public:
     static inline const std::string P_YAXIS = "P_YAXIS";
     static inline const std::string T_ITEMS = "T_ITEMS";
 
-    ViewportItem(const model_type& model);
+    ViewportItem(const std::string& model);
 
     ViewportAxisItem* xAxis() const;
 

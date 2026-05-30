@@ -43,7 +43,7 @@ TEST_F(SessionModelTest, insertItem)
     auto pool = std::make_shared<ItemPool>();
     SessionModel model("Test", pool);
 
-    const model_type modelType = Constants::BaseType;
+    const std::string modelType = Constants::BaseType;
 
     // inserting single item
     auto item = model.insertItem<SessionItem>();
@@ -83,7 +83,7 @@ TEST_F(SessionModelTest, insertNewItem)
     auto pool = std::make_shared<ItemPool>();
     SessionModel model("Test", pool);
 
-    const model_type modelType = Constants::BaseType;
+    const std::string modelType = Constants::BaseType;
 
     // inserting single item
     auto item = model.insertNewItem(modelType);
