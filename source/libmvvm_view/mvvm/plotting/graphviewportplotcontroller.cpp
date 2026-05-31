@@ -48,10 +48,10 @@ struct GraphViewportPlotController::GraphViewportPlotControllerImpl {
     {
         auto viewport = viewport_item();
 
-        xAxisController = std::make_unique<ViewportAxisPlotController>(custom_plot->xAxis);
+        xAxisController = std::make_unique<ViewportAxisPlotController>(custom_plot->m_xAxis);
         xAxisController->setItem(viewport->xAxis());
 
-        yAxisController = std::make_unique<ViewportAxisPlotController>(custom_plot->yAxis);
+        yAxisController = std::make_unique<ViewportAxisPlotController>(custom_plot->m_yAxis);
         yAxisController->setItem(viewport->yAxis());
     }
 

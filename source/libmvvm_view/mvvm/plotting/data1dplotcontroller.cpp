@@ -62,7 +62,7 @@ struct Data1DPlotController::Data1DPlotControllerImpl {
         }
 
         if (!m_errorBars)
-            m_errorBars = new QCPErrorBars(customPlot()->xAxis, customPlot()->yAxis);
+            m_errorBars = new QCPErrorBars(customPlot()->m_xAxis, customPlot()->m_yAxis);
 
         m_errorBars->setData(fromStdVector<double>(errors));
         m_errorBars->setDataPlottable(m_graph);

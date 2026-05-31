@@ -60,7 +60,7 @@ struct ColorMapPlotController::ColorMapPlotControllerImpl {
                                QCPColorScale* color_scale)
         : master(master), custom_plot(plot)
     {
-        color_map = new QCPColorMap(custom_plot->xAxis, custom_plot->yAxis);
+        color_map = new QCPColorMap(custom_plot->m_xAxis, custom_plot->m_yAxis);
         data_controller = std::make_unique<Data2DPlotController>(color_map);
 
         if (color_scale)

@@ -30,7 +30,7 @@ TEST_F(AxisTitleControllerTest, initialState)
 {
     auto custom_plot = std::make_unique<QCustomPlot>();
 
-    auto axis = custom_plot->xAxis;
+    auto axis = custom_plot->m_xAxis;
 
     // controller shouldn''t change axis range
     AxisTitleController controller(axis);
@@ -46,7 +46,7 @@ TEST_F(AxisTitleControllerTest, setTextItem)
     SessionModel model;
     auto textItem = model.insertItem<TextItem>();
 
-    auto axis = custom_plot->xAxis;
+    auto axis = custom_plot->m_xAxis;
     //    auto expected_pointSize = axis->labelFont().pointSize();
     //    auto expected_family = axis->labelFont().family();
 
@@ -72,7 +72,7 @@ TEST_F(AxisTitleControllerTest, setFont)
     SessionModel model;
     auto textItem = model.insertItem<TextItem>();
 
-    auto axis = custom_plot->xAxis;
+    auto axis = custom_plot->m_xAxis;
 
     // controller shouldn''t change axis range
     AxisTitleController controller(axis);

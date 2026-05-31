@@ -44,14 +44,14 @@ struct MouseMoveReporter::MouseMoveReporterImpl {
         QObject::connect(custom_plot, &QCustomPlot::mouseMove, on_mouse_move);
     }
 
-    double pixelToXaxisCoord(double pixel) const { return custom_plot->xAxis->pixelToCoord(pixel); }
+    double pixelToXaxisCoord(double pixel) const { return custom_plot->m_xAxis->pixelToCoord(pixel); }
 
-    double pixelToYaxisCoord(double pixel) const { return custom_plot->yAxis->pixelToCoord(pixel); }
+    double pixelToYaxisCoord(double pixel) const { return custom_plot->m_yAxis->pixelToCoord(pixel); }
 
     bool axesRangeContains(double xpos, double ypos) const
     {
-        return custom_plot->xAxis->range().contains(xpos)
-               && custom_plot->yAxis->range().contains(ypos);
+        return custom_plot->m_xAxis->range().contains(xpos)
+               && custom_plot->m_yAxis->range().contains(ypos);
     }
 };
 

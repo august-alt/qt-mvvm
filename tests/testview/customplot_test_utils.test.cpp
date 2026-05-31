@@ -44,7 +44,7 @@ TEST_F(CustomplotTestUtilsTest, binErrors)
 
     EXPECT_EQ(TestUtils::binErrors(graph), std::vector<double>());
 
-    auto errorBars = new QCPErrorBars(custom_plot.xAxis, custom_plot.yAxis);
+    auto errorBars = new QCPErrorBars(custom_plot.m_xAxis, custom_plot.m_yAxis);
     errorBars->removeFromLegend();
     errorBars->setDataPlottable(graph);
     errorBars->setData(QVector<double>({0.1, 0.2, 0.3}));
