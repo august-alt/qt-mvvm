@@ -53,13 +53,14 @@ jobs:
         mkdir build && cd build
         cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Profile ../
         cmake --build . --config Profile -j4
-        lcov --zerocounters --directory .
-        ctest -j4 -T test -T coverage
-        lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/source/*" --parallel 4
+        ctest -j4
 
     - name: Generate test coverage summary
       run: |
-        SUMMARY=$(lcov --summary build/coverage.info --ignore-errors format,format --ignore-errors inconsistent,inconsistent)
+        cd $GITHUB_WORKSPACE/build
+
+        lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/source/*" --parallel 4
+        SUMMARY=$(lcov --summary coverage.info --ignore-errors format,format --ignore-errors inconsistent,inconsistent)
         echo "$SUMMARY"
 
         if echo "$SUMMARY" | grep "lines" | grep -q "no data found"; then
@@ -92,6 +93,19 @@ jobs:
         
         echo "Lines:     $LINES_HIT / $LINES_TOTAL ($LINES_PERCENT%)"
         echo "Functions: $FUNCTIONS_HIT / $FUNCTIONS_TOTAL ($FUNCTIONS_PERCENT%)"
+        
+    - name: Generate test coverage report
+      run: |
+        cd $GITHUB_WORKSPACE/build
+        genhtml --quiet --demangle-cpp --parallel --ignore-errors inconsistent --ignore-errors corrupt -o coverage -- coverage.info
+
+    - name: Upload the test coverage report
+      uses: actions/upload-artifact@v7
+      with:
+        name: TestCoverageReport
+        path: ./build/coverage/
+        retention-days: 7
+        overwrite: true
 
     - name: Create coverage badges
       uses: schneegans/dynamic-badges-action@v1.8.0
