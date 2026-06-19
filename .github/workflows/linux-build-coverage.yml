@@ -1,5 +1,8 @@
 name: TestCoverage
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
     branches: [ master, develop ]    

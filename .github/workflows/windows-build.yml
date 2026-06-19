@@ -1,5 +1,8 @@
 name: Windows
 
+permissions:
+  contents: read
+
 env:
   CCACHE_VERSION: 4.13.6
 
