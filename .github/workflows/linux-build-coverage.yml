@@ -35,7 +35,7 @@ jobs:
         key: qtmvvm-coverage-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
         restore-keys: |
           qtmvvm-coverage-ccache-
-          
+
     - name: build
       env:
         CCACHE_DIR: $GITHUB_WORKSPACE/.ccache
@@ -51,11 +51,63 @@ jobs:
         lcov --zerocounters --directory .
         ctest -j4 -T test -T coverage
         lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/source/*" --parallel 4
-        lcov --summary coverage.info --ignore-errors inconsistent,inconsistent
 
-    - name: Uploading to codecov
-      uses: codecov/codecov-action@v1
+    - name: Generate test coverage summary
+      run: |
+        SUMMARY=$(lcov --summary build/coverage.info --ignore-errors format,format --ignore-errors inconsistent,inconsistent)
+        echo "$SUMMARY"
+
+        if echo "$SUMMARY" | grep "lines" | grep -q "no data found"; then
+        LINES_PERCENT=0
+        LINES_HIT=0
+        LINES_TOTAL=0
+        else
+        LINES_PERCENT=$(echo "$SUMMARY" | grep "lines" | grep -oP '\K[0-9.]+(?=%)')
+        LINES_HIT=$(echo "$SUMMARY" | grep "lines" | grep -oP '\(\K[0-9]+(?= of)')
+        LINES_TOTAL=$(echo "$SUMMARY" | grep "lines" | grep -oP 'of \K[0-9]+(?= lines)')
+        fi
+
+        echo "LCOV_LINES_HIT=$LINES_HIT" >> $GITHUB_ENV
+        echo "LCOV_LINES_TOTAL=$LINES_TOTAL" >> $GITHUB_ENV
+        echo "LCOV_LINES_PERCENT=$LINES_PERCENT" >> $GITHUB_ENV
+
+        if echo "$SUMMARY" | grep "functions" | grep -q "no data found"; then
+        FUNCTIONS_PERCENT="0"
+        FUNCTIONS_HIT="0"
+        FUNCTIONS_TOTAL="0"
+        else
+        FUNCTIONS_PERCENT=$(echo "$SUMMARY" | grep "functions" | grep -oP '\K[0-9.]+(?=%)')
+        FUNCTIONS_HIT=$(echo "$SUMMARY" | grep "functions" | grep -oP '\(\K[0-9]+(?= of)')
+        FUNCTIONS_TOTAL=$(echo "$SUMMARY" | grep "functions" | grep -oP 'of \K[0-9]+(?= functions)')
+        fi
+        
+        echo "LCOV_FUNCTIONS_HIT=$FUNCTIONS_HIT" >> $GITHUB_ENV
+        echo "LCOV_FUNCTIONS_TOTAL=$FUNCTIONS_TOTAL" >> $GITHUB_ENV
+        echo "LCOV_FUNCTIONS_PERCENT=$FUNCTIONS_PERCENT" >> $GITHUB_ENV
+        
+        echo "Lines:     $LINES_HIT / $LINES_TOTAL ($LINES_PERCENT%)"
+        echo "Functions: $FUNCTIONS_HIT / $FUNCTIONS_TOTAL ($FUNCTIONS_PERCENT%)"
+
+    - name: Create coverage badges
+      uses: schneegans/dynamic-badges-action@v1.8.0
       with:
-        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-        files: ./build/coverage.info
-        verbose: false # optional (default = false)
+        auth: ${{ secrets.BADGE_GIST_SECRET }}
+        gistID: 94f00e5f5924881793dfda0a598055fd
+        filename: coverage_lines_badge.svg
+        label: 'Coverage: Lines'
+        message: ${{ env.LCOV_LINES_HIT }} of ${{ env.LCOV_LINES_TOTAL }} (${{ env.LCOV_LINES_PERCENT }}%)
+        valColorRange: ${{ env.LCOV_LINES_PERCENT }}
+        minColorRange: 0
+        maxColorRange: 100
+
+    - name: Create coverage badges
+      uses: schneegans/dynamic-badges-action@v1.8.0
+      with:
+        auth: ${{ secrets.BADGE_GIST_SECRET }}
+        gistID: 94f00e5f5924881793dfda0a598055fd
+        filename: coverage_functions_badge.svg
+        label: 'Coverage: Functions'
+        message: ${{ env.LCOV_FUNCTIONS_HIT }} of ${{ env.LCOV_FUNCTIONS_TOTAL }} (${{ env.LCOV_FUNCTIONS_PERCENT }}%)
+        valColorRange: ${{ env.LCOV_FUNCTIONS_PERCENT }}
+        minColorRange: 0
+        maxColorRange: 100

@@ -3,8 +3,9 @@
 ![Linux](/../../actions/workflows/linux-build.yml/badge.svg)
 ![Windows](/../../actions/workflows/windows-build.yml/badge.svg)
 ![Mac OS](/../../actions/workflows/macos-build.yml/badge.svg)
-![version](https://img.shields.io/badge/version-0.2.0-blue)
-[![codecov](https://codecov.io/gh/gpospelov/qt-mvvm/branch/develop/graph/badge.svg?token=ZI8SETH4SI)](https://codecov.io/gh/gpospelov/qt-mvvm)
+![version](https://img.shields.io/badge/version-0.2.0-blue)  
+![Coverage](https://gist.githubusercontent.com/amaa-99/94f00e5f5924881793dfda0a598055fd/raw/coverage_functions_badge.svg)
+![Coverage](https://gist.githubusercontent.com/amaa-99/94f00e5f5924881793dfda0a598055fd/raw/coverage_lines_badge.svg)
 
 ## Overview
 
