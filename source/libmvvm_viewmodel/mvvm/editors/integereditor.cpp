@@ -36,8 +36,7 @@ IntegerEditor::IntegerEditor(QWidget* parent) : CustomEditor(parent), m_intEdito
 
     layout->addWidget(m_intEditor);
 
-    connect(m_intEditor, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            [=] { this->onEditingFinished(); });
+    connect(m_intEditor, &QSpinBox::valueChanged, [=] { this->onEditingFinished(); });
 
     setLayout(layout);
 
