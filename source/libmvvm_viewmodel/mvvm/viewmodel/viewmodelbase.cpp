@@ -9,6 +9,9 @@
 
 #include "mvvm/viewmodel/viewmodelbase.h"
 #include "mvvm/viewmodel/standardviewitems.h"
+#include <QAbstractItemModel>
+#include <QObject>
+#include <Qt>
 #include <memory>
 #include <stdexcept>
 #include <utility>
@@ -21,9 +24,9 @@ struct ViewModelBase::ViewModelBaseImpl {
     std::unique_ptr<ViewItem> m_root;
     ViewModelBaseImpl(ViewModelBase* model) : m_model(model) {}
 
-    bool item_belongs_to_model(ViewItem* item)
+    bool item_belongs_to_model(const ViewItem* item) const
     {
-        return m_model->indexFromItem(item).isValid() || item == m_model->rootItem();
+        return (item == m_model->rootItem()) || (m_model->indexFromItem(item).isValid());
     }
 };
 
@@ -88,7 +91,7 @@ bool ViewModelBase::setData(const QModelIndex& index, const QVariant& value, int
     if (auto item = itemFromIndex(index); item) {
         bool result = item->setData(value, role);
         if (result)
-            dataChanged(index, index, QVector<int>() << role);
+            emit dataChanged(index, index, QVector<int>() << role);
         return result;
     }
 
@@ -114,9 +117,11 @@ ViewItem* ViewModelBase::itemFromIndex(const QModelIndex& index) const
 
 QModelIndex ViewModelBase::indexFromItem(const ViewItem* item) const
 {
-    return item && item->parent()
-               ? createIndex(item->row(), item->column(), const_cast<ViewItem*>(item))
-               : QModelIndex();
+  if (item->parent() == nullptr) {
+      return QModelIndex(); // An invalid index.
+  }
+  
+  return createIndex(item->row(), item->column(), item);
 }
 
 void ViewModelBase::removeRow(ViewItem* parent, int row)
@@ -136,7 +141,7 @@ void ViewModelBase::clearRows(ViewItem* parent)
         throw std::runtime_error(
             "Error in ViewModelBase: attempt to use parent from another model");
 
-    if (!parent->rowCount())
+    if (parent->rowCount() == 0)
         return;
 
     beginRemoveRows(indexFromItem(parent), 0, parent->rowCount() - 1);

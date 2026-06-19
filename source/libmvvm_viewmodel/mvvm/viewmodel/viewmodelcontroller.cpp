@@ -266,8 +266,10 @@ void ViewModelController::onDataChange(SessionItem* item, int role)
     for (auto view : findViews(item)) {
         // inform corresponding LabelView and DataView
         if (isValidItemRole(view, role)) {
-            auto index = p_impl->m_viewModel->indexFromItem(view);
-            p_impl->m_viewModel->dataChanged(index, index, Utils::ItemRoleToQtRole(role));
+            QModelIndex index = p_impl->m_viewModel->indexFromItem(view);
+            if (index.isValid()) {
+              emit p_impl->m_viewModel->dataChanged(index, index, Utils::ItemRoleToQtRole(role));
+            }
         }
     }
 }
