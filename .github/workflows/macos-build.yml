@@ -80,5 +80,5 @@ jobs:
       with:
         name: TestReport.log
         path: ./build/Testing/Temporary/LastTest.log
-        retention-days: 7
+        retention-days: ${{ case(github.retention_days < 7, github.retention_days, 7) }}
         overwrite: true
