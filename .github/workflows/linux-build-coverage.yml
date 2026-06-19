@@ -51,7 +51,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE && pwd && ls
         mkdir build && cd build
-        cmake -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Profile ../
+        cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Profile ../
         cmake --build . --config Profile -j4
         lcov --zerocounters --directory .
         ctest -j4 -T test -T coverage
