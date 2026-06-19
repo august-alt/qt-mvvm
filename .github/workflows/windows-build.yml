@@ -16,7 +16,9 @@ jobs:
       max-parallel: 3
 
     steps:
-    - uses: actions/checkout@v6.0.2
+
+    - name: Checkout code
+      uses: actions/checkout@v6.0.2
 
     - name: Download ccache
       id: ccache
@@ -55,7 +57,14 @@ jobs:
         cache: 'true'
         cache-key-prefix: 'install-qt-action'
 
-    - name: build
+    - name: Find VS path
+      shell: cmd
+      run: |
+        for /F "delims=" %%G IN ('vswhere -latest -property installationPath') DO set "_VSInstallationPath=%%G"
+        echo Visual Studio found at: %_VSInstallationPath%
+        >> %GITHUB_ENV% echo VSInstallationPath="%_VSInstallationPath%"
+
+    - name: Build
       shell: cmd
       env:
         CCACHE_BASEDIR: $GITHUB_WORKSPACE
@@ -64,7 +73,7 @@ jobs:
         CCACHE_COMPRESSLEVEL: "6"
         CCACHE_MAXSIZE: "1000M"
       run: |
-        call "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        call "%VSInstallationPath:"=%\VC\Auxiliary\Build\vcvars64.bat"
         set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
         echo QTDIR=%QTDIR%
         set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
@@ -75,12 +84,12 @@ jobs:
         ccache -z
         ccache -p
         cmake --build . --config Release -j4
-        
+
     - name: ctest
       if: success()
       shell: cmd
       run: |
-        call "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        call "%VSInstallationPath:"=%\VC\Auxiliary\Build\vcvars64.bat"
         set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
         echo QTDIR=%QTDIR%
         set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
