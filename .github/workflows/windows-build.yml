@@ -4,6 +4,7 @@ env:
   CCACHE_VERSION: 4.13.6
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, develop ]    
   pull_request:
