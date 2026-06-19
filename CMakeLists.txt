@@ -90,6 +90,13 @@ if(MSVC)
     
 else()
 
+    # https://gcovr.com/en/stable/cookbook.html#oos-cmake
+    # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html
+    
+    # These flags are used if cmake is called with -DCMAKE_BUILD_TYPE=PROFILE:
+    set(CMAKE_C_FLAGS_PROFILE "--coverage")
+    set(CMAKE_CXX_FLAGS_PROFILE "--coverage")
+    
     # Warning level:
     # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 
@@ -149,5 +156,5 @@ endif(MVVM_BUILD_TESTS)
 include(installation)
 add_subdirectory(examples)
 
-# Defines 'codecoverage', 'clangformat' targets. See CodeTools.cmake for details.
+# Defines 'clangformat' targets. See CodeTools.cmake for details.
 project_codetools_setup()

@@ -6,7 +6,6 @@ set(BEAUTIFICATION_TARGETS mvvm_model mvvm_viewmodel mvvm_view testmodel testvie
 set(BEAUTIFICATION_EXAMPLES celleditorscore concurrentplotcore dragandmovecore flateditorcore
     graphicsproxycore layereditorcore plotcolormapcore plotgraphscore saveloadprojectcore treeviewscore)
 
-
 # Defines new target for 'clangformat' to beautify whole project.
 # Use 'make clangformat' or 'cmake --build . --target clangformat' to beautify the code.
 # Beautification settings are located in .clang-format in project directory.
@@ -28,24 +27,6 @@ function(project_clangformat_setup)
    clangformat_setup(${all_sources})
 endfunction()
 
-
-# Setups test coverage target.
-# Use 'make codecoverage' or 'cmake --build . --target codecoverage' to beautify the code.
-# Requires -DMVVM_GENERATE_COVERAGE=ON
-
-function(project_testcoverage_setup)
-    setup_target_for_coverage_lcov(NAME coverage
-        EXECUTABLE ctest -j 4
-        DEPENDENCIES testmodel testviewmodel testview testintegration
-        EXCLUDE
-            "${PROJECT_SOURCE_DIR}/thirdparty/*"
-            "${PROJECT_SOURCE_DIR}/tests/*"
-            "${PROJECT_SOURCE_DIR}/examples/*"
-            "${PROJECT_SOURCE_DIR}/source/libmvvm_view/*"
-            "**CompilerId*" "/usr/*"  "${CMAKE_BINARY_DIR}/*"
-        )
-endfunction()
-
 # Fetches google test.
 function(fetch_googletest)
   include(FetchContent)
@@ -58,8 +39,5 @@ endfunction()
 function(project_codetools_setup)
     if (MVVM_SETUP_CLANGFORMAT)
         project_clangformat_setup()
-    endif()
-    if (MVVM_SETUP_CODECOVERAGE)
-        project_testcoverage_setup()
     endif()
 endfunction()

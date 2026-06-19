@@ -46,12 +46,16 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE && pwd && ls
         mkdir build && cd build
-        cmake -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DMVVM_SETUP_CODECOVERAGE=ON ../
-        make coverage -j4        
-        
+        cmake -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Profile ../
+        cmake --build . --config Profile -j4
+        lcov --zerocounters --directory .
+        ctest -j4 -T test -T coverage
+        lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/source/*" --parallel 4
+        lcov --summary coverage.info --ignore-errors inconsistent,inconsistent
+
     - name: Uploading to codecov
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         files: ./build/coverage.info
-        verbose: true # optional (default = false)
+        verbose: false # optional (default = false)
