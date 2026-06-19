@@ -4,7 +4,6 @@
 ![Windows](/../../actions/workflows/windows-build.yml/badge.svg)
 ![Mac OS](/../../actions/workflows/macos-build.yml/badge.svg)
 ![version](https://img.shields.io/badge/version-0.2.0-blue)
-![](https://tokei.rs/b1/github/gpospelov/qt-mvvm/?category=code)
 [![codecov](https://codecov.io/gh/gpospelov/qt-mvvm/branch/develop/graph/badge.svg?token=ZI8SETH4SI)](https://codecov.io/gh/gpospelov/qt-mvvm)
 
 ## Overview
