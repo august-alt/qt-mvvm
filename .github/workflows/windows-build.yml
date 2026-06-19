@@ -81,34 +81,35 @@ jobs:
         CCACHE_COMPRESS: "true"
         CCACHE_COMPRESSLEVEL: "6"
         CCACHE_MAXSIZE: "1000M"
+        QT_QPA_PLATFORM: offscreen
       run: |
         call "%VSInstallationPath:"=%\VC\Auxiliary\Build\vcvars64.bat"
         set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
         echo QTDIR=%QTDIR%
         set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
-        cd ${{github.workspace}}
-        mkdir build
-        cd build
+        mkdir ${{github.workspace}}\build
+        cd ${{github.workspace}}\build
         cmake -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" ..
-        ccache -z
-        ccache -p
         cmake --build . --config Release -j4
 
-    - name: ctest
-      if: success()
+    - name: Test
+      env:
+        QT_QPA_PLATFORM: offscreen        
       shell: cmd
       run: |
         call "%VSInstallationPath:"=%\VC\Auxiliary\Build\vcvars64.bat"
         set QTDIR=${{github.workspace}}\Qt\6.10.3\msvc2022_64
-        echo QTDIR=%QTDIR%
         set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;${{github.workspace}}
         cd ${{github.workspace}}\build
-        ccache -s
-        ctest --output-on-failure
+        echo Running tests...
+        ctest -j --quiet --output-on-failure
+        echo Testing finished.
 
-    - name: ctest output
+    - name: Upload test logs
+      uses: actions/upload-artifact@v7
       if: failure()
-      shell: cmd
-      run: |
-        cd ${{github.workspace}}\build
-        type Testing\Temporary\LastTest.log
+      with:
+        name: TestReport.log
+        path: ./build/Testing/Temporary/LastTest.log
+        retention-days: 7
+        overwrite: true
