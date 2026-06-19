@@ -7977,7 +7977,7 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
   if (!mParentAxis) { qDebug() << Q_FUNC_INFO << "invalid parent axis"; return; }
   
   const int tickCount = mParentAxis->mTickVector.size();
-  double t; // helper variable, result of coordinate-to-pixel transforms
+
   if (mParentAxis->orientation() == Qt::Horizontal)
   {
     // draw zeroline:
@@ -7992,8 +7992,8 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
         if (qAbs(mParentAxis->mTickVector.at(i)) < epsilon)
         {
           zeroLineIndex = i;
-          t = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i)); // x
-          painter->drawLine(QLineF(t, mParentAxis->mAxisRect->bottom(), t, mParentAxis->mAxisRect->top()));
+          double x = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i));
+          painter->drawLine(QLineF(x, mParentAxis->mAxisRect->bottom(), x, mParentAxis->mAxisRect->top()));
           break;
         }
       }
@@ -8004,8 +8004,8 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
     for (int i=0; i<tickCount; ++i)
     {
       if (i == zeroLineIndex) continue; // don't draw a gridline on top of the zeroline
-      t = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i)); // x
-      painter->drawLine(QLineF(t, mParentAxis->mAxisRect->bottom(), t, mParentAxis->mAxisRect->top()));
+      double x = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i));
+      painter->drawLine(QLineF(x, mParentAxis->mAxisRect->bottom(), x, mParentAxis->mAxisRect->top()));
     }
   } else
   {
@@ -8021,8 +8021,8 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
         if (qAbs(mParentAxis->mTickVector.at(i)) < epsilon)
         {
           zeroLineIndex = i;
-          t = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i)); // y
-          painter->drawLine(QLineF(mParentAxis->mAxisRect->left(), t, mParentAxis->mAxisRect->right(), t));
+          double y = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i));
+          painter->drawLine(QLineF(mParentAxis->mAxisRect->left(), y, mParentAxis->mAxisRect->right(), y));
           break;
         }
       }
@@ -8033,8 +8033,8 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
     for (int i=0; i<tickCount; ++i)
     {
       if (i == zeroLineIndex) continue; // don't draw a gridline on top of the zeroline
-      t = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i)); // y
-      painter->drawLine(QLineF(mParentAxis->mAxisRect->left(), t, mParentAxis->mAxisRect->right(), t));
+      double y = mParentAxis->coordToPixel(mParentAxis->mTickVector.at(i));
+      painter->drawLine(QLineF(mParentAxis->mAxisRect->left(), y, mParentAxis->mAxisRect->right(), y));
     }
   }
 }
