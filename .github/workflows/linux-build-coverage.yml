@@ -130,6 +130,7 @@ jobs:
         overwrite: true
 
     - name: Create coverage badges
+      id: lines-coverage-badge
       uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.BADGE_GIST_SECRET }}
@@ -140,8 +141,17 @@ jobs:
         valColorRange: ${{ env.LCOV_LINES_PERCENT }}
         minColorRange: 0
         maxColorRange: 100
+      continue-on-error: true
+
+    - name: Handle Failure
+      if: steps.lines-coverage-badge.outcome != 'success'
+      run: |
+        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and gistID above.\nNote that the gistID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
+        msg="${msg//'\n'/'%0A'}"
+        echo "::error::$msg"
 
     - name: Create coverage badges
+      id: functions-coverage-badge
       uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.BADGE_GIST_SECRET }}
@@ -152,3 +162,11 @@ jobs:
         valColorRange: ${{ env.LCOV_FUNCTIONS_PERCENT }}
         minColorRange: 0
         maxColorRange: 100
+      continue-on-error: true
+
+    - name: Handle Failure
+      if: steps.functions-coverage-badge.outcome != 'success'
+      run: |
+        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and gistID above.\nNote that the gistID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
+        msg="${msg//'\n'/'%0A'}"
+        echo "::error::$msg"
