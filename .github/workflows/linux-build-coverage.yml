@@ -21,12 +21,15 @@ jobs:
       max-parallel: 3
 
     steps:
-    - uses: actions/checkout@v6.0.2
+    
+    - name: Setup dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: build-essential cmake cmake-extras ccache qt6-base-dev qt6-tools-dev-tools libqt6svg6 qt6-declarative-dev libx11-xcb1 libxkbcommon-dev lcov
+        version: 1.0
+        execute_install_scripts: true
 
-    - name: setup dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential cmake cmake-extras ccache qt6-base-dev qt6-tools-dev-tools libqt6svg6 qt6-declarative-dev libx11-xcb1 libxkbcommon-dev lcov
+    - uses: actions/checkout@v6.0.2
         
     - name: ccache timestamp
       id: ccache_cache_timestamp
