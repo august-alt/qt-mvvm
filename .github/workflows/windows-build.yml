@@ -8,15 +8,14 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  CCACHE_VERSION: 4.13.6
-
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [ master, develop ]    
-  pull_request:
-    branches: [ master, develop ]
+
+env:
+  CCACHE_VERSION: 4.13.6
 
 jobs:
   build:

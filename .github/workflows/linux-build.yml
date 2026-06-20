@@ -10,9 +10,8 @@ permissions:
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ master, develop ]
   pull_request:
+  push:
     branches: [ master, develop ]
 
 jobs:
