@@ -134,7 +134,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.BADGE_GIST_SECRET }}
-        gistID: 94f00e5f5924881793dfda0a598055fd
+        gistID: ${{ vars.BADGE_GIST_ID }}
         filename: coverage_lines_badge.svg
         label: 'Coverage: Lines'
         message: ${{ env.LCOV_LINES_HIT }} of ${{ env.LCOV_LINES_TOTAL }} (${{ env.LCOV_LINES_PERCENT }}%)
@@ -146,7 +146,7 @@ jobs:
     - name: Handle Failure
       if: steps.lines-coverage-badge.outcome != 'success'
       run: |
-        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and gistID above.\nNote that the gistID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
+        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and BADGE_GIST_ID for the repository.\nNote that the BADGE_GIST_ID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
         msg="${msg//'\n'/'%0A'}"
         echo "::error::$msg"
 
@@ -155,7 +155,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.BADGE_GIST_SECRET }}
-        gistID: 94f00e5f5924881793dfda0a598055fd
+        gistID: ${{ vars.BADGE_GIST_ID }}
         filename: coverage_functions_badge.svg
         label: 'Coverage: Functions'
         message: ${{ env.LCOV_FUNCTIONS_HIT }} of ${{ env.LCOV_FUNCTIONS_TOTAL }} (${{ env.LCOV_FUNCTIONS_PERCENT }}%)
@@ -167,6 +167,6 @@ jobs:
     - name: Handle Failure
       if: steps.functions-coverage-badge.outcome != 'success'
       run: |
-        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and gistID above.\nNote that the gistID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
+        msg="The badge creation failed!\nTypically this happens on a fork due to the associated gist for storing the badge files belonging to another repository.\nPlease create a gist for the current repository/fork and update the respective BADGE_GIST_SECRET and BADGE_GIST_ID for the repository.\nNote that the BADGE_GIST_ID is also hardcoded in the README.md file and must be manually updated there too.\nOtherwise the badges pertaining to another repository will be shown, with the values related to that repository!"
         msg="${msg//'\n'/'%0A'}"
         echo "::error::$msg"
