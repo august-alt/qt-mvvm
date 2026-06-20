@@ -6,6 +6,9 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
+  # `actions:write` permission is required to delete caches
+  # See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
+  actions: write
   contents: read
 
 on:
@@ -15,37 +18,35 @@ on:
     branches: [ master, develop ]
 
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 3
 
+    env:
+      CCACHE_CACHE_KEY: ${{ github.workflow }}-ccache
+
     steps:
 
-    - name: Setup dependencies
-      uses: awalsh128/cache-apt-pkgs-action@latest
+    - name: Checkout code
+      uses: actions/checkout@v6.0.2
+
+    - name: Install dependencies
+      uses: awalsh128/cache-apt-pkgs-action@v1.6.1
       with:
         packages: build-essential cmake cmake-extras ccache qt6-base-dev qt6-tools-dev-tools libqt6svg6 qt6-declarative-dev libx11-xcb1 libxkbcommon-dev lcov
         version: 1.0
         execute_install_scripts: true        
 
-    - uses: actions/checkout@v6.0.2
-
-    - name: ccache timestamp
-      id: ccache_cache_timestamp
-      shell: cmake -P {0}
-      run: |
-        string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-        message("::set-output name=timestamp::${current_date}")
-        
-    - name: ccache files
-      uses: actions/cache@v5.0.5
+    - name: Restore the ccache
+      id: restore-ccache
+      uses: actions/cache/restore@v5
       with:
-        path: .ccache
-        key: qtmvvm-ubuntu-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-        restore-keys: |
-          qtmvvm-ubuntu-ccache-
-          
+        key: ${{ env.CCACHE_CACHE_KEY }}
+        path: ${{ github.workspace }}/.ccache
+
     - name: Build
       env:
         CCACHE_DIR: $GITHUB_WORKSPACE/.ccache
@@ -65,6 +66,23 @@ jobs:
       with:
         name: qt-mvvm
         path: ./build/qt-mvvm-*.tar.gz  
+
+    - name: Delete the previously saved ccache
+      continue-on-error: true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+      if: steps.restore-ccache.outputs.cache-hit == 'true'
+      run: |
+        echo "Deleting saved ccache keys..."
+        gh cache delete ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }}
+
+    - name: Save the ccache
+      if: always()
+      uses: actions/cache/save@v5
+      with:
+        key: ${{ env.CCACHE_CACHE_KEY }}
+        path: ${{ github.workspace }}/.ccache
 
     - name: Test
       env:
