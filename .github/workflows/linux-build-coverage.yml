@@ -27,7 +27,7 @@ jobs:
 
     env:
       CCACHE_CACHE_KEY: ${{ github.workflow }}-ccache
-      
+
     steps:
 
     - name: Checkout code
@@ -46,7 +46,7 @@ jobs:
       with:
         key: ${{ env.CCACHE_CACHE_KEY }}
         path: ${{ github.workspace }}/.ccache
-          
+
     - name: Build
       env:
         CCACHE_DIR: $GITHUB_WORKSPACE/.ccache
@@ -79,7 +79,7 @@ jobs:
 
     - name: Test
       env:
-        QT_QPA_PLATFORM: offscreen        
+        QT_QPA_PLATFORM: offscreen
       run: |
         cd $GITHUB_WORKSPACE/build
         echo Running tests...
@@ -99,7 +99,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/build
 
-        lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/build/source/*" --parallel 4
+        lcov --rc geninfo_unexecuted_blocks=1 --capture --directory . --output-file coverage.info --ignore-errors inconsistent --ignore-errors unused --include "$GITHUB_WORKSPACE/source/*" --parallel 4
         SUMMARY=$(lcov --summary coverage.info --ignore-errors format,format --ignore-errors inconsistent,inconsistent)
         echo "$SUMMARY"
 
@@ -126,14 +126,16 @@ jobs:
         FUNCTIONS_HIT=$(echo "$SUMMARY" | grep "functions" | grep -oP '\(\K[0-9]+(?= of)')
         FUNCTIONS_TOTAL=$(echo "$SUMMARY" | grep "functions" | grep -oP 'of \K[0-9]+(?= functions)')
         fi
-        
+
         echo "LCOV_FUNCTIONS_HIT=$FUNCTIONS_HIT" >> $GITHUB_ENV
         echo "LCOV_FUNCTIONS_TOTAL=$FUNCTIONS_TOTAL" >> $GITHUB_ENV
         echo "LCOV_FUNCTIONS_PERCENT=$FUNCTIONS_PERCENT" >> $GITHUB_ENV
-        
+
         echo "Lines:     $LINES_HIT / $LINES_TOTAL ($LINES_PERCENT%)"
         echo "Functions: $FUNCTIONS_HIT / $FUNCTIONS_TOTAL ($FUNCTIONS_PERCENT%)"
-        
+
+        echo "::notice::$SUMMARY" | tr -d '\n\r'
+
     - name: Generate test coverage report
       run: |
         cd $GITHUB_WORKSPACE/build
