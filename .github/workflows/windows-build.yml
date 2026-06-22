@@ -15,12 +15,12 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [ master, develop ]    
+    branches: [ master, develop ]
 
 jobs:
 
   build:
-  
+
     runs-on: windows-latest
     strategy:
       max-parallel: 3
@@ -99,8 +99,16 @@ jobs:
         GH_REPO: ${{ github.repository }}
       if: steps.restore-ccache.outputs.cache-hit == 'true'
       run: |
-        echo "Deleting saved ccache keys..."
-        gh cache delete ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }}
+        $caches = gh cache list --key ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }} --json id,ref,key | ConvertFrom-Json
+        if ($caches.count -ne 0)
+        {
+          echo "Deleting saved ccache keys..."
+          gh cache delete ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }}
+        }
+        else
+        {
+          echo "No saved ccache keys for deleting."
+        }
 
     - name: Save the ccache
       if: always()
@@ -111,7 +119,7 @@ jobs:
 
     - name: Test
       env:
-        QT_QPA_PLATFORM: offscreen        
+        QT_QPA_PLATFORM: offscreen
       shell: cmd
       run: |
         call "%VSInstallationPath:"=%\VC\Auxiliary\Build\vcvars64.bat"

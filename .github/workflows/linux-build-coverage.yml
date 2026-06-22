@@ -67,8 +67,14 @@ jobs:
         GH_REPO: ${{ github.repository }}
       if: steps.restore-ccache.outputs.cache-hit == 'true'
       run: |
-        echo "Deleting saved ccache keys..."
-        gh cache delete ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }}
+        caches=$(gh cache list --key ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }} --json id,ref,key)
+        caches_length=$(jq length <<< "$caches")
+        if [ $caches_length -gt 0 ]; then
+          echo "Deleting saved ccache keys..."
+          gh cache delete ${{ env.CCACHE_CACHE_KEY }} --ref ${{ github.ref }}
+        else
+          echo "No saved ccache keys for deleting."
+        fi
 
     - name: Save the ccache
       if: always()
