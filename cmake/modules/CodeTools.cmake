@@ -46,6 +46,15 @@ function(project_testcoverage_setup)
         )
 endfunction()
 
+# Fetches google test version 1.12.1
+function(fetch_googletest)
+  include(FetchContent)
+  FetchContent_Declare(googletest GIT_REPOSITORY https://github.com/google/googletest.git GIT_TAG v1.17.0)
+
+FetchContent_MakeAvailable(googletest)
+  message(VERBOSE "GTest binaries are present at ${googletest_BINARY_DIR}")
+endfunction()
+
 # Setups targets for code processing.
 
 function(project_codetools_setup)

@@ -9,6 +9,7 @@ add_link_options(-stdlib=libc++)
 endif()
 
 option(MVVM_BUMP_VERSION "Propagate version number" OFF)
+option(MVVM_USE_QT6 "Compile with Qt6" ON)
 option(MVVM_DISCOVER_TESTS "Auto discover tests and add to ctest, otherwise will run at compile time" ON)
 option(MVVM_ENABLE_FILESYSTEM "Enable <filesystem> (requires modern compiler), otherwise rely on Qt" ON)
 option(MVVM_BUILD_TESTS "Build tests" OFF)
@@ -22,7 +23,9 @@ include(configuration)
 
 add_subdirectory(source)
 add_subdirectory(thirdparty)
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif(BUILD_TESTING)
 
 include(installation)
 add_subdirectory(examples)
