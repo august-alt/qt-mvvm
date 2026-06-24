@@ -69,7 +69,12 @@ MVVM_MODEL_EXPORT bool IsRealLimitsVariant(const Variant& variant);
 
 } // namespace ModelView::Utils
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+// In Qt 6 std::string is provided by Qt's built-in metatype system, so the
+// explicit Q_DECLARE_METATYPE below would trigger a "specialization after
+// instantiation" error. Keep it for Qt 5 builds.
 Q_DECLARE_METATYPE(std::string)
+#endif
 Q_DECLARE_METATYPE(std::vector<double>)
 Q_DECLARE_METATYPE(ModelView::RealLimits)
 

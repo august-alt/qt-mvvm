@@ -14,11 +14,11 @@ set(export_filename ${MVVM_AUTOGEN_DIR}/mvvm/view_export.h)
 generate_export_header(${library_name} EXPORT_FILE_NAME ${export_filename})
 
 # -- Dependencies --
-target_link_libraries(${library_name} PUBLIC mvvm_viewmodel Qt5::Widgets)
+target_link_libraries(${library_name} PUBLIC mvvm_viewmodel Qt${QT_VERSION_MAJOR}::Widgets)
 
 if (${MVVM_USE_SYSTEM_QCUSTOMPLOT})
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(QCUSTOMPLOT REQUIRED qcustomplot-qt5)
+    pkg_check_modules(QCUSTOMPLOT REQUIRED qcustomplot-qt${QT_VERSION_MAJOR})
 
     target_link_libraries(${library_name} PUBLIC ${QCUSTOMPLOT_LIBRARIES})
     target_include_directories(${library_name}
