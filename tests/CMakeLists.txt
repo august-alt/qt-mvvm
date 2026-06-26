@@ -1,10 +1,15 @@
+enable_testing()
+
+find_package(GTest 1.10 QUIET CONFIG)
+
+enable_testing()
+
+find_package(GTest 1.10 QUIET CONFIG)
 if (NOT ${MVVM_BUILD_TESTS})
   return()
 endif()
 
-enable_testing()
-
-fetch_googletest()
+find_package(GTest 1.10 QUIET CONFIG)
 include(GoogleTest)
 
 if(WIN32)
